@@ -85,7 +85,8 @@ public class Aplicacion extends Application {
 		// Tipo de operacion
 		operacionCombo = new ComboBox<>();
 		operacionCombo.getItems().addAll("+", "-", "*", "/");
-		operacionCombo.getSelectionModel().select(0);
+		// operacionCombo.getSelectionModel().select(0);
+		// operacionCombo.setValue("+");
 
 		// VBox que contiene la operacion
 		VBox operacionBox = new VBox(5);
@@ -102,59 +103,40 @@ public class Aplicacion extends Application {
 		primaryStage.setScene(escena);
 		primaryStage.setTitle("Calculadora de numeros Complejos");
 		primaryStage.show();
-		
-		//Binding primer número
+
+		// Binding primer número
 		num11Text.textProperty().bindBidirectional(complejo1.realProperty(), new NumberStringConverter());
 		num12Text.textProperty().bindBidirectional(complejo1.imaginarioProperty(), new NumberStringConverter());
 
-		//Binding segundo número
+		// Binding segundo número
 		num21Text.textProperty().bindBidirectional(complejo2.realProperty(), new NumberStringConverter());
 		num22Text.textProperty().bindBidirectional(complejo2.imaginarioProperty(), new NumberStringConverter());
-		
-		//Binding número resultado
-		num31Text.textProperty().bind(complejoRes.realProperty().asString());
-		num32Text.textProperty().bind(complejoRes.imaginarioProperty().asString());
 
-		//Listener operación
+		// Binding número resultado
+		num31Text.textProperty().bind(complejoRes.realProperty().asString("%.2f"));
+		num32Text.textProperty().bind(complejoRes.imaginarioProperty().asString("%.2f"));
+
+		// Listener operación
 		operacionCombo.valueProperty().addListener(e -> {
-			//Caso suma
+			
+			// Caso suma
 			if (operacionCombo.valueProperty().getValue() == "+") {
-				complejoRes.realProperty().bind(complejo1.realProperty().add(complejo2.realProperty()));
-				complejoRes.imaginarioProperty()
-						.bind(complejo1.imaginarioProperty().add(complejo2.imaginarioProperty()));
+				suma();
 			}
-			
-			//Caso resta
+
+			// Caso resta
 			else if (operacionCombo.valueProperty().getValue() == "-") {
-				complejoRes.realProperty().bind(complejo1.realProperty().subtract(complejo2.realProperty()));
-
-				complejoRes.imaginarioProperty()
-						.bind(complejo1.imaginarioProperty().subtract(complejo2.imaginarioProperty()));
+				resta();
 			}
-			
-			//Caso multiplicación
+
+			// Caso multiplicación
 			else if (operacionCombo.valueProperty().getValue() == "*") {
-				complejoRes.realProperty().bind(complejo1.realProperty().multiply(complejo2.realProperty())
-						.subtract(complejo1.imaginarioProperty().multiply(complejo2.imaginarioProperty())));
-
-				complejoRes.imaginarioProperty().bind(complejo1.realProperty().multiply(complejo2.imaginarioProperty())
-						.add(complejo2.realProperty().multiply(complejo1.imaginarioProperty())));
+				multiplicacion();
 			}
-			
-			//Caso división
+
+			// Caso división
 			else if (operacionCombo.valueProperty().getValue() == "/") {
-
-				complejoRes.realProperty()
-						.bind(((complejo1.realProperty().multiply(complejo2.realProperty()))
-								.add(complejo1.imaginarioProperty().multiply(complejo2.imaginarioProperty())))
-										.divide(complejo2.realProperty().multiply(complejo2.realProperty()
-												.add(complejo2.realProperty().multiply(complejo2.realProperty())))));
-
-				complejoRes.imaginarioProperty()
-						.bind(((complejo2.realProperty().multiply(complejo1.imaginarioProperty()))
-								.subtract(complejo1.realProperty().multiply(complejo2.imaginarioProperty())))
-										.divide(complejo2.realProperty().multiply(complejo2.realProperty()
-												.add(complejo2.realProperty().multiply(complejo2.realProperty())))));
+				division();
 			}
 		});
 
@@ -162,5 +144,46 @@ public class Aplicacion extends Application {
 
 	public static void main(String[] args) {
 		launch(args);
+	}
+
+	public void suma() {
+
+		complejoRes.realProperty().bind(complejo1.realProperty().add(complejo2.realProperty()));
+		
+		complejoRes.imaginarioProperty().bind(complejo1.imaginarioProperty().add(complejo2.imaginarioProperty()));
+		
+	}
+
+	public void resta() {
+
+		complejoRes.realProperty().bind(complejo1.realProperty().subtract(complejo2.realProperty()));
+
+		complejoRes.imaginarioProperty().bind(complejo1.imaginarioProperty().subtract(complejo2.imaginarioProperty()));
+		
+	}
+
+	public void multiplicacion() {
+
+		complejoRes.realProperty().bind(complejo1.realProperty().multiply(complejo2.realProperty())
+				.subtract(complejo1.imaginarioProperty().multiply(complejo2.imaginarioProperty())));
+
+		complejoRes.imaginarioProperty().bind(complejo1.realProperty().multiply(complejo2.imaginarioProperty())
+				.add(complejo2.realProperty().multiply(complejo1.imaginarioProperty())));
+		
+	}
+
+	public void division() {
+
+		complejoRes.realProperty()
+				.bind(((complejo1.realProperty().multiply(complejo2.realProperty())
+						.add(complejo1.imaginarioProperty().multiply(complejo2.imaginarioProperty())))
+								.divide(complejo2.realProperty().multiply(complejo2.realProperty())
+										.add(complejo2.realProperty().multiply(complejo2.realProperty())))));
+
+		complejoRes.imaginarioProperty()
+				.bind(((complejo2.realProperty().multiply(complejo1.imaginarioProperty())
+						.subtract(complejo1.realProperty().multiply(complejo2.imaginarioProperty())))
+								.divide(complejo2.realProperty().multiply(complejo2.realProperty())
+										.add(complejo2.realProperty().multiply(complejo2.realProperty())))));
 	}
 }
