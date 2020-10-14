@@ -102,30 +102,37 @@ public class Aplicacion extends Application {
 		primaryStage.setScene(escena);
 		primaryStage.setTitle("Calculadora de numeros Complejos");
 		primaryStage.show();
-
+		
+		//Binding primer número
 		num11Text.textProperty().bindBidirectional(complejo1.realProperty(), new NumberStringConverter());
 		num12Text.textProperty().bindBidirectional(complejo1.imaginarioProperty(), new NumberStringConverter());
 
+		//Binding segundo número
 		num21Text.textProperty().bindBidirectional(complejo2.realProperty(), new NumberStringConverter());
 		num22Text.textProperty().bindBidirectional(complejo2.imaginarioProperty(), new NumberStringConverter());
-
+		
+		//Binding número resultado
 		num31Text.textProperty().bind(complejoRes.realProperty().asString());
 		num32Text.textProperty().bind(complejoRes.imaginarioProperty().asString());
 
+		//Listener operación
 		operacionCombo.valueProperty().addListener(e -> {
+			//Caso suma
 			if (operacionCombo.valueProperty().getValue() == "+") {
 				complejoRes.realProperty().bind(complejo1.realProperty().add(complejo2.realProperty()));
 				complejoRes.imaginarioProperty()
 						.bind(complejo1.imaginarioProperty().add(complejo2.imaginarioProperty()));
 			}
-
+			
+			//Caso resta
 			else if (operacionCombo.valueProperty().getValue() == "-") {
 				complejoRes.realProperty().bind(complejo1.realProperty().subtract(complejo2.realProperty()));
 
 				complejoRes.imaginarioProperty()
 						.bind(complejo1.imaginarioProperty().subtract(complejo2.imaginarioProperty()));
 			}
-
+			
+			//Caso multiplicación
 			else if (operacionCombo.valueProperty().getValue() == "*") {
 				complejoRes.realProperty().bind(complejo1.realProperty().multiply(complejo2.realProperty())
 						.subtract(complejo1.imaginarioProperty().multiply(complejo2.imaginarioProperty())));
@@ -133,7 +140,8 @@ public class Aplicacion extends Application {
 				complejoRes.imaginarioProperty().bind(complejo1.realProperty().multiply(complejo2.imaginarioProperty())
 						.add(complejo2.realProperty().multiply(complejo1.imaginarioProperty())));
 			}
-
+			
+			//Caso división
 			else if (operacionCombo.valueProperty().getValue() == "/") {
 
 				complejoRes.realProperty()
