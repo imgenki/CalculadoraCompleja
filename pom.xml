@@ -4,7 +4,7 @@
   <artifactId>CalculadoraCompleja</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>CalculadoraCompleja</name>
-	<description>Callculadora de numeros complejos</description>
+	<description>Calculadora de numeros complejos</description>
 
 	<properties>
 		<maven.compiler.target>14</maven.compiler.target>
